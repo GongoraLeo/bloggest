@@ -19,6 +19,15 @@ return new class extends Migration
             // Si el usuario se borra, el user_id del comentario se pone a NULL.
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->text('content');
+            // nombre y email para comentarios de usuarios no registrados.
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+
+            //likes and dislikes igual que en los posts.
+            $table->integer('likes')->default(0);
+            $table->integer('dislikes')->default(0);
+
+
             $table->timestamps();
         });
     }

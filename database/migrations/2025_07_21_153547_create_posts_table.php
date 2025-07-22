@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('slug');
             $table->text('content');
             $table->timestamp('published_at')->nullable();
-            $table->integer('likes')->default(0);
-            $table->integer('dislikes')->default(0);            
-            $table->integer('views')->default(0);
+            $table->unsignedInteger('likes')->default(0);
+            $table->unsignedInteger('dislikes')->default(0);            
+            $table->unsignedInteger('views')->default(0);
+            $table->unsignedInteger('shares')->default(0); // Añadir contador de compartidos
 
             $table->timestamps();
         });

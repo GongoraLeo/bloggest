@@ -13,6 +13,10 @@ class PostController extends Controller
     public function index()
     {
         //
+        $posts = Post::all();
+
+        return view('posts/index', $posts);
+
     }
 
     /**
@@ -21,6 +25,7 @@ class PostController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -29,6 +34,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+
     }
 
     /**
@@ -36,7 +42,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        //obtiene un post preciso por su slug y lo pasa a la vista para su visualizacion
+        
+
     }
 
     /**

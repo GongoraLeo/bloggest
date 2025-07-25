@@ -2,23 +2,45 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Models\User;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * The model to policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
      */
-    public function register(): void
-    {
+    protected $policies = [
         //
-    }
+    ];
 
     /**
-     * Bootstrap any application services.
+     * Register any authentication / authorization services.
      */
     public function boot(): void
     {
-        //
+        // Gate para administradores
+        Gate::define('access-admin-panel', function (User $user) { 
+            return $user->isAdmin();
+        });
+
+        // Gate para crear posts (solo administradores)
+        Gate::define('create-post', function (User $user) {
+            return $user->isAdmin();
+        });
+
+        // Gate para editar comentarios (administradores o el propio autor)
+        Gate::define('edit-comment', function (User $user, Comment $comment) {
+            return $user->isAdmin() || $user->id === $comment->user_id;
+        });
+
+        // Gate para eliminar comentarios (administradores o el propio autor)
+        Gate::define('delete-comment', function (User $user, Comment $comment) {
+            return $user->isAdmin() || $user->id === $comment->user_id;
+        });
     }
 }

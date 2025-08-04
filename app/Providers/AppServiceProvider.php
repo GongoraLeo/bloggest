@@ -16,6 +16,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         //
+        // app/Providers/AuthServiceProvider.php
+        
+            // ... otras policies
+            \App\Models\Comment::class => \App\Policies\CommentPolicy::class,
+       
+        
     ];
 
     /**
@@ -31,16 +37,6 @@ class AuthServiceProvider extends ServiceProvider
         // Gate para crear posts (solo administradores)
         Gate::define('create-post', function (User $user) {
             return $user->isAdmin();
-        });
-
-        // Gate para editar comentarios (administradores o el propio autor)
-        Gate::define('edit-comment', function (User $user, Comment $comment) {
-            return $user->isAdmin() || $user->id === $comment->user_id;
-        });
-
-        // Gate para eliminar comentarios (administradores o el propio autor)
-        Gate::define('delete-comment', function (User $user, Comment $comment) {
-            return $user->isAdmin() || $user->id === $comment->user_id;
         });
     }
 }

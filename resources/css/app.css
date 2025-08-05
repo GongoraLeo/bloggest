@@ -1,3 +1,71 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Definición de la Paleta de Colores como Variables CSS */
+@layer base {
+    :root {
+        --color-background: #ECEFF4; /* Gris muy claro (Nieve) */
+        --color-text: #2E3440;       /* Gris oscuro (Noche Polar) */
+        --color-primary: #3B4252;    /* Azul oscuro */
+        --color-primary-dark: #2E3440; /* El mismo que el texto para contraste */
+        --color-accent: #5E81AC;     /* Azul brillante (Fiordo) */
+        --color-accent-hover: #81A1C1; /* Azul más claro para hover */
+
+        --color-card-bg: #FFFFFF;
+        --color-border: #D8DEE9;
+    }
+
+    /* Aplicamos los colores base al body */
+    body {
+        background-color: var(--color-background);
+        color: var(--color-text);
+    }
+}
+
+/* Estilos para componentes comunes usando @apply de Tailwind */
+@layer components {
+    .nav-link {
+        @apply text-gray-300 hover:text-white transition-colors duration-200;
+    }
+
+    .container {
+        @apply max-w-7xl;
+    }
+
+    h1 {
+        @apply text-4xl font-bold mb-4 text-primary-dark;
+    }
+
+    h2 {
+        @apply text-3xl font-bold mb-3 text-primary-dark;
+    }
+
+    a {
+        @apply text-accent hover:text-accent-hover transition-colors duration-200;
+    }
+
+    .btn {
+        @apply inline-block bg-accent text-white font-bold py-2 px-4 rounded hover:bg-accent-hover transition-colors duration-200 no-underline;
+    }
+
+    .btn-danger {
+        @apply bg-red-600 hover:bg-red-700;
+    }
+
+    .card {
+        @apply bg-card-bg p-6 rounded-lg shadow-md border border-border;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea,
+    select {
+        @apply mt-1 block w-full px-3 py-2 border border-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent-hover;
+    }
+
+    label {
+        @apply block text-sm font-medium text-gray-700;
+    }
+}

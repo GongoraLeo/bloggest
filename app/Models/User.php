@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,6 +27,10 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'avatar_path',
+        'bio',
+        'social_links',
+        'username',
     ];
 
     /**
@@ -73,5 +78,36 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;
+    }
+
+    /**
+     * Los usuarios que este usuario sigue.
+     * La relación es "muchos a muchos" a través de la tabla pivote 'followers'.
+     * 'follower_id' es la clave foránea de este modelo (el que sigue).
+     * 'followed_id' es la clave foránea del modelo relacionado (el que es seguido).
+     */
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'followed_id')->withTimestamps();
+    }
+
+    /**
+     * Los usuarios que siguen a este usuario.
+     * Es la relación inversa de 'following'.
+     * 'followed_id' es la clave foránea de este modelo (el que es seguido).
+     * 'follower_id' es la clave foránea del modelo relacionado (el que sigue).
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
+    }
+
+    /**
+     * Los posts que este usuario ha marcado como favoritos.
+     * La relación es "muchos a muchos" a través de la tabla pivote 'favorite_posts'.
+     */
+    public function favoritePosts(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'favorite_posts', 'user_id', 'post_id')->withTimestamps();
     }
 }

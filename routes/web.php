@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\FollowController;
+use App\Http\Controllers\FavoritePostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Rutas para seguir y dejar de seguir usuarios
+    Route::post('/users/{user}/follow', [FollowController::class, 'store'])->name('users.follow');
+    Route::delete('/users/{user}/follow', [FollowController::class, 'destroy'])->name('users.unfollow');
+
+    // Rutas para marcar/desmarcar posts como favoritos
+    Route::post('/posts/{post}/favorite', [FavoritePostController::class, 'store'])->name('posts.favorite');
+    Route::delete('/posts/{post}/favorite', [FavoritePostController::class, 'destroy'])->name('posts.unfavorite');
 
     // Rutas para que el autor de un comentario o un admin puedan editarlo o borrarlo.
     Route::resource('comments', CommentController::class)->only(['edit', 'update', 'destroy']);

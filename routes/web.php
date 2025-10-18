@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
 // Usamos el Gate 'access-admin-panel'
 Route::middleware(['auth', 'can:access-admin-panel'])->prefix('admin')->name('admin.')->group(function () {
     // Rutas para crear, editar y borrar posts.
-    Route::resource('posts', PostController::class)->except(['index', 'show']);
+    Route::resource('posts', PostController::class)->except(['show']);
     // Rutas para el CRUD completo de usuarios.
     Route::resource('users', UserController::class);
 });

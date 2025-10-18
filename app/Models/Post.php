@@ -30,6 +30,17 @@ class Post extends Model
     ];
 
     /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'published_at' => 'datetime',
+        ];
+    }
+    /**
      * Obtiene el usuario al que pertenece el post.
      */
     public function user(): BelongsTo

@@ -25,12 +25,20 @@ class PostController extends Controller
      * Display a listing of the resource. (Ruta Pública)
      * Muestra una lista paginada de todos los posts.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Si la ruta actual contiene 'admin', mostramos la vista de administración.
+        if ($request->routeIs('admin.posts.index')) {
+            // Carga todos los posts para el panel de admin, con autor y conteo de comentarios.
+            $posts = Post::with('user')->withCount('comments')->latest()->paginate(15);
+            return view('admin.posts.index', compact('posts'));
+        }
+
         // Carga los posts con su autor (user) y el conteo de comentarios de forma eficiente.
         // Esto evita el problema N+1 al no tener que hacer una consulta por cada post en la vista.
         $posts = Post::with('user')->withCount('comments')->latest()->paginate(10);
 
+        // Vista pública
         return view('posts.index', compact('posts'));
     }
 
@@ -128,8 +136,6 @@ class PostController extends Controller
         $post->delete();
 
         // Redirige al índice de posts en el panel de administración.
-        // Como no hay una ruta 'admin.posts.index', lo redirigimos a la de usuarios.
-        // Lo ideal sería crear una vista para listar posts en el admin.
-        return redirect()->route('admin.users.index')->with('success', 'Post eliminado correctamente.');
+        return redirect()->route('admin.posts.index')->with('success', 'Post eliminado correctamente.');
     }
 }
